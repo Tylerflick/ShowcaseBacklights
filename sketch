@@ -1,0 +1,7 @@
+void setup() {
+  pinMode(0, OUTPUT);
+}
+
+void loop() {
+  analogWrite(1, (analogRead(1)/8));
+}

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+avrdude -c usbtiny -p attiny85 -U flash:w:.build/trinket5/firmware.hex

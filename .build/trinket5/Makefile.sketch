@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/trinket5/src/sketch.cpp : src/sketch.ino
+	@mkdir -p .build/trinket5/src
+	@echo [93msrc/sketch.ino[0m
+	@/Users/Tyler/Development/Arduino/bin/ino preproc  -o $@ $^
+
+
+all : .build/trinket5/src/sketch.cpp
+	@true
+
