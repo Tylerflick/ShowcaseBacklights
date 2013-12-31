@@ -1,5 +1,5 @@
-# Showcase Backlights
----
+Showcase Backlights
+====
 Showcase Backlights are a Trinket & LPD8806 backlighting solution.
 ## Dependecies
 ### Software
