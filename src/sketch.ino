@@ -55,6 +55,7 @@ void loop() {
     delay(100);
   } else {
     while(ambLightOutOfRange()) {
+			balancePixels();
       adjustPixelValue();
       drawStaticPixels();
       strip.show();
@@ -81,8 +82,22 @@ void adjustPixelValue() {
     ++curBaseLight;
 }
 
-void balanceAllPixels() {
-	
+void balancePixels() {
+	bool balanced = false;
+	while(!balanced) {
+		for(int i = 0; i < numPixels; ++i) {
+			balanced = true;
+			if(pixelValues[i].adjustValue != 0) {
+				--pixelValues[i].adjustValue;
+				balanced = false;
+		    strip.setPixelColor(i,
+		                        (uint8_t)((curBaseLight + pixelValues[i].adjustValue) * RED),
+		                        (uint8_t)((curBaseLight + pixelValues[i].adjustValue) * GREEN),
+		                        (uint8_t)((curBaseLight + pixelValues[i].adjustValue) * BLUE));		
+			}
+		}
+		strip.show();
+	}
 }
 
 bool ambLightOutOfRange() {
