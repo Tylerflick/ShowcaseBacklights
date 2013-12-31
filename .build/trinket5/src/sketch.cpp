@@ -32,7 +32,7 @@ typedef struct {
 
 static const uint16_t numPixels = 10, 
                       photoPin = 1,
-                      value_range = 10; 
+                      value_range = 20; 
 uint8_t curBaseLight = 0,
         nextBaseLight, 
         minValue, 
@@ -49,12 +49,12 @@ void setup() {
   curBaseLight = readAmbientLight();
 
   // Calculate the min & max value for the ambient light
-  minValue = (uint8_t)ceil(1/min(min(GREEN, BLUE), RED)) * value_range;
-  maxValue = (uint8_t)127 - minValue;
+  minValue = (uint8_t)ceil(1/min(min(GREEN, BLUE), RED));
+  maxValue = (uint8_t)127 - minValue * value_range;
 
   for(int i = 0; i < numPixels; ++i) {
-    pixelValues[i].adjustment = random(0,1) ? increasing : decreasing;
-    pixelValues[i].adjustValue = random(-value_range, value_range);
+    pixelValues[i].adjustment = i % 2 == 0 ? increasing : decreasing;
+    pixelValues[i].adjustValue = random(0, value_range);
   }
   if(DEBUG) pinMode(0, OUTPUT);
 }
@@ -72,8 +72,7 @@ void loop() {
       strip.show();
       delay(WAIT);
   }
-  //drawDynamicPixels();
-  twinkle();
+  drawDynamicPixels();
   strip.show();
   delay(WAIT);
   }
@@ -108,8 +107,7 @@ void drawStaticPixels() {
 }
 
 void drawDynamicPixels() {
-  for(uint8_t i = 0; i < numPixels; ++i) {
-    
+  for(uint8_t i = 0; i < numPixels; ++i) {    
     if (pixelValues[i].adjustment == increasing) {
       if (pixelValues[i].adjustValue >= value_range) {
         pixelValues[i].adjustment = decreasing;
@@ -118,7 +116,7 @@ void drawDynamicPixels() {
         ++pixelValues[i].adjustValue;
       }
     } else {
-      if (pixelValues[i].adjustValue <= -value_range) {
+      if (pixelValues[i].adjustValue <= 0) {
         pixelValues[i].adjustment = increasing;
         ++pixelValues[i].adjustValue;
       } else {
